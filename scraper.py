@@ -10,10 +10,17 @@ import time
 def get_standard_options():
     # Configure headless mode
     options = Options()
-    # options.headless = True
-    # options.add_argument('--window-size=1920x1080')
+    options.add_argument('--headless=new')
+    options.add_argument('--window-size=0x0')
     options.add_experimental_option('detach', True)
     return options
+
+
+def get_all_article_urls(articles):
+    urls = []
+    for article in articles:
+        urls.append(article.find_element(by=By.TAG_NAME, value='a').get_attribute('href'))
+    return urls
 
 
 def main():
@@ -31,23 +38,24 @@ def main():
     number_of_articles = marketplace.get_number_of_articles(driver)
 
     # get articles
-    article = driver.find_elements(by=By.CLASS_NAME, value='product')
-    while len(article) < number_of_articles:
-        article = driver.find_elements(by=By.CLASS_NAME, value='product')
+    articles = driver.find_elements(by=By.CLASS_NAME, value='product')
+    # while len(articles) < number_of_articles:
+    #     articles = driver.find_elements(by=By.CLASS_NAME, value='product')
+    #
+    #     # scroll to bottom to show all elements
+    #     footer = driver.find_element(by=By.TAG_NAME, value="footer")
+    #     ActionChains(driver).move_to_element(footer).perform()
 
-        # scroll to bottom to show all elements
-        footer = driver.find_element(by=By.TAG_NAME, value="footer")
-        ActionChains(driver).move_to_element(footer).perform()
+    print("Number of Articles: " + str(len(articles)))
 
-        time.sleep(5)
+    urls = get_all_article_urls(articles)
+    print(urls)
 
-    print(len(article))
+    # TODO: open all articles
+    # TODO: get infromation about every single article and store in Article class
+    # TODO: collect all articles in ArticleBulk class and convert to pandas dataframe
+    # TODO: print pandas dataframe & visualize/store e.g. in database/eleasticserach?
 
-    for i in range(10):
-        print(article[i].text)
-    print(article[len(article) - 1].text)
-
-    time.sleep(10)
     driver.quit()
 
 
