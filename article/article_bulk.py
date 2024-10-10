@@ -1,4 +1,4 @@
-from article import Article
+from article.article import Article
 import pandas as pd
 
 

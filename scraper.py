@@ -1,19 +1,12 @@
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.by import By
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
-import marketplace_objects as mp
 import time
 
+from selenium.webdriver.common.by import By
+from selenium import webdriver
 
-def get_standard_options():
-    # Configure headless mode
-    options = Options()
-    options.add_argument('--headless=new')
-    options.add_argument('--window-size=0x0')
-    options.add_experimental_option('detach', True)
-    return options
+from article.article_bulk import ArticleBulk
+from config.webdriver import get_standard_options
+from mining.miner import Miner
+import marketplace_objects as mp
 
 
 def get_all_article_urls(articles):
@@ -27,9 +20,9 @@ def main():
     driver = webdriver.Chrome(options=get_standard_options())
 
     # search for articles
-    brandname = "nike"
+    brand_name = "nike"
     marketplace = mp.TRENDYOL_DE
-    driver.get(marketplace.get_search_url(brandname))
+    driver.get(marketplace.get_search_url(brand_name))
 
     # accept cookies
     marketplace.accept_cookies(driver)
@@ -52,9 +45,15 @@ def main():
     print(urls)
 
     # TODO: open all articles
-    # TODO: get infromation about every single article and store in Article class
+    # TODO: get information about every single article and store in Article class
+    list_articles = []
+    for url in urls:
+        miner = Miner(url, marketplace, brand_name)
+        list_articles.append(miner.mine())
     # TODO: collect all articles in ArticleBulk class and convert to pandas dataframe
+    article_bulk = ArticleBulk(list_articles)
     # TODO: print pandas dataframe & visualize/store e.g. in database/eleasticserach?
+    article_bulk.get_as_dataframe()
 
     driver.quit()
 
