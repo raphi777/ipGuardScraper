@@ -11,9 +11,11 @@ class Miner:
         self.marketplace = marketplace
         self.search_term = search_term
         self.driver = webdriver.Chrome(options=get_standard_options())
+        self.driver.get(self.url)
+        self.marketplace.accept_cookies(self.driver)
 
     def mine(self):
-        return Article(
+        article = Article(
             title=get_title(driver=self.driver, mp=self.marketplace),
             description=get_description(driver=self.driver, mp=self.marketplace),
             price=get_price(driver=self.driver, mp=self.marketplace),
@@ -24,3 +26,5 @@ class Miner:
             image_url=get_image_url(driver=self.driver, mp=self.marketplace),
             search_term=self.search_term
         )
+        self.driver.quit()
+        return article

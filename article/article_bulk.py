@@ -38,5 +38,4 @@ class ArticleBulk:
             "search_term": self.search_term
         }
         df = pd.DataFrame(data)
-        print(df)
         return df

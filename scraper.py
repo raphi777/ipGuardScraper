@@ -7,6 +7,8 @@ from article.article_bulk import ArticleBulk
 from config.webdriver import get_standard_options
 from mining.miner import Miner
 import marketplace_objects as mp
+import datetime
+import os
 
 
 def get_all_article_urls(articles):
@@ -42,20 +44,22 @@ def main():
     print("Number of Articles: " + str(len(articles)))
 
     urls = get_all_article_urls(articles)
-    print(urls)
 
-    # TODO: open all articles
-    # TODO: get information about every single article and store in Article class
     list_articles = []
     for url in urls:
         miner = Miner(url, marketplace, brand_name)
-        list_articles.append(miner.mine())
-    # TODO: collect all articles in ArticleBulk class and convert to pandas dataframe
-    article_bulk = ArticleBulk(list_articles)
-    # TODO: print pandas dataframe & visualize/store e.g. in database/eleasticserach?
-    article_bulk.get_as_dataframe()
-
+        article = miner.mine()
+        list_articles.append(article)
+        article.print_props()
     driver.quit()
+
+    # collect all articles in ArticleBulk class and convert to pandas dataframe
+    article_bulk = ArticleBulk(list_articles)
+
+    article_bulk.get_as_dataframe()
+    outfile_name = marketplace.id + '_' + datetime.datetime.now()
+    with open(os.path.join('.out', outfile_name), 'w') as f:
+        f.write(article_bulk.get_as_dataframe().to_csv())
 
 
 if __name__ == "__main__":
