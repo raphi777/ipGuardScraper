@@ -57,7 +57,7 @@ def main():
     article_bulk = ArticleBulk(list_articles)
 
     article_bulk.get_as_dataframe()
-    outfile_name = marketplace.id + '_' + datetime.datetime.now()
+    outfile_name = marketplace.id + '_' + str(datetime.datetime.now())
     with open(os.path.join('.out', outfile_name), 'w') as f:
         f.write(article_bulk.get_as_dataframe().to_csv())
 
