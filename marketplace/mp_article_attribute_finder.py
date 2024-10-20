@@ -1,16 +1,13 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 def get_title(driver, mp):
     if mp.id == "TRENDYOL_DE":
-        # element = WebDriverWait(driver, 20).until(
-        #     EC.presence_of_element_located((By.TAG_NAME, 'main'))
-        # )
-        # wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'brand-name')))
-        # TODO: fix retreival of information
-        # print(driver.find_element(by=By.CLASS_NAME, value='brand-name').text)
+        return driver.find_element(by=By.CLASS_NAME, value='product-info-product-name').text
+
+
+def get_brand(driver, mp):
+    if mp.id == "TRENDYOL_DE":
         return driver.find_element(by=By.CLASS_NAME, value='brand-name').text
 
 
@@ -22,6 +19,15 @@ def get_description(driver, mp):
 def get_price(driver, mp):
     if mp.id == "TRENDYOL_DE":
         return driver.find_element(by=By.CLASS_NAME, value='selling-price').text
+
+
+def get_category(driver, mp):
+    if mp.id == "TRENDYOL_DE":
+        category = "["
+        subcategories = driver.find_elements(by=By.CLASS_NAME, value='product-detail-new-breadcrumbs-item')
+        for i in range(len(subcategories) - 1):
+            category += subcategories[i].text + ","
+        return category.rstrip(',') + "]"
 
 
 def get_seller(driver, mp):

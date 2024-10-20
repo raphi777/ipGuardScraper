@@ -6,8 +6,10 @@ class ArticleBulk:
     def __init__(self, articles: list[Article]):
         self.articles = articles
         self.title = []
+        self.brand = []
         self.description = []
         self.price = []
+        self.category = []
         self.seller = []
         self.published_at = []
         self.marketplace = []
@@ -16,8 +18,10 @@ class ArticleBulk:
         self.search_term = []
         for article in self.articles:
             self.title.append(article.title)
+            self.brand.append(article.brand)
             self.description.append(article.description)
             self.price.append(article.price)
+            self.category.append(article.category)
             self.seller.append(article.seller)
             self.published_at.append(article.published_at)
             self.marketplace.append(article.marketplace)
@@ -28,8 +32,10 @@ class ArticleBulk:
     def get_as_dataframe(self):
         data = {
             "title": self.title,
+            "brand": self.brand,
             "description": self.description,
             "price": self.price,
+            "category": self.category,
             "seller": self.seller,
             "published_at": self.published_at,
             "marketplace": self.marketplace,

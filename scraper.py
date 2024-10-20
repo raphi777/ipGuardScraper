@@ -1,8 +1,7 @@
-import time
-
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 
+from environment import OUT_FOLDER
 from article.article_bulk import ArticleBulk
 from config.webdriver import get_standard_options
 from mining.miner import Miner
@@ -50,7 +49,7 @@ def main():
         miner = Miner(url, marketplace, brand_name)
         article = miner.mine()
         list_articles.append(article)
-        article.print_props()
+        # article.print_props()
     driver.quit()
 
     # collect all articles in ArticleBulk class and convert to pandas dataframe
@@ -58,7 +57,7 @@ def main():
 
     article_bulk.get_as_dataframe()
     outfile_name = marketplace.id + '_' + str(datetime.datetime.now())
-    with open(os.path.join('.out', outfile_name), 'w') as f:
+    with open(os.path.join(OUT_FOLDER, outfile_name + '.csv'), 'w') as f:
         f.write(article_bulk.get_as_dataframe().to_csv())
 
 
