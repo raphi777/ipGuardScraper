@@ -1,3 +1,4 @@
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 
@@ -33,12 +34,12 @@ def main():
 
     # get articles
     articles = driver.find_elements(by=By.CLASS_NAME, value='product')
-    # while len(articles) < number_of_articles:
-    #     articles = driver.find_elements(by=By.CLASS_NAME, value='product')
-    #
-    #     # scroll to bottom to show all elements
-    #     footer = driver.find_element(by=By.TAG_NAME, value="footer")
-    #     ActionChains(driver).move_to_element(footer).perform()
+    while len(articles) < number_of_articles:
+        articles = driver.find_elements(by=By.CLASS_NAME, value='product')
+
+        # scroll to bottom to show all elements
+        footer = driver.find_element(by=By.TAG_NAME, value="footer")
+        ActionChains(driver).move_to_element(footer).perform()
 
     print("Number of Articles: " + str(len(articles)))
 

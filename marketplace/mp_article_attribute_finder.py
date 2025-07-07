@@ -25,7 +25,17 @@ def get_category(driver, mp):
     if mp.id == "TRENDYOL_DE":
         category = "["
         subcategories = driver.find_elements(by=By.CLASS_NAME, value='product-detail-new-breadcrumbs-item')
+
         for i in range(len(subcategories) - 1):
+            if "schuhe" in subcategories[i].text:
+                return "shoes"
+            if "socken" in subcategories[i].text:
+                return "socks"
+            if "pullover" or "sweatshirt" or "hoodie" in subcategories[i].text:
+                return "pullovers & hoodies"
+            if "t-shirt" or "tshirt" in subcategories[i].text:
+                return "t-shirt"
+
             category += subcategories[i].text + ","
         return category.rstrip(',') + "]"
 
